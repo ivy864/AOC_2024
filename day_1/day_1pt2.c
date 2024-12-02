@@ -4,21 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int getmin(int *nums, int len) {
-    int min = 0x7fffffff;
-    int spot = -1;
-    for (int i = 0; i < len; i++) {
-        if (nums[i] < min) {
-            spot = i;
-            min = nums[i];
-        }
-    }
-    nums[spot] = 0x7fffffff;
-
-    printf("min: %d\n", min);
-    return min;
-}
-
 int getsimilarity(int *nums, int num, int len) {
     int sim = 0; 
     for (int i = 0; i < len; i++) {
@@ -62,3 +47,4 @@ int main(int argc, char *argv[]) {
     printf("total: %d\n", total);
     return EXIT_SUCCESS;
 }
+
