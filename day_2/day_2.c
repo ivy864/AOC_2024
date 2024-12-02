@@ -30,22 +30,17 @@ int main(int argc, char *argv[]) {
             num = strtol(nexttok, NULL, 10);
             if (prevnum - num == 0) {
                 issafe = 0;
-                printf("zero\n");
             }
             else if (diff > 0 && prevnum - num < 0 ) {
                 
                 issafe = 0;
-                printf("thing1\n");
             }
             else if (diff < 0 && prevnum - num > 0 ) {
                 issafe = 0;
-                printf("thing2\n");
             }
             else if (abs(prevnum - num) > 3) {
                 issafe = 0;
-                printf("thing:%d\n",abs(prevnum - num));
             }
-            printf("issafe: %d\n", issafe);
 
             diff = prevnum - num;
             prevnum = num;
@@ -59,7 +54,6 @@ int main(int argc, char *argv[]) {
     }
 
     printf("safe: %d\n", safe);
-    printf("its: %d\n", its);
 
     return EXIT_SUCCESS;
 }

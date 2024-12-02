@@ -4,25 +4,48 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
-int issafe (int num, int prevnum, int diff) {
-    int safe = 1;
-    if (prevnum - num == 0) {
-        safe = 0;
-    }
-    else if (diff > 0 && prevnum - num < 0 ) {
-        safe = 0;
-    }
-    else if (diff < 0 && prevnum - num > 0 ) {
-        safe = 0;
-    }
-    else if (abs(prevnum - num) > 3) {
-        safe = 0;
+int issafe(int *num, int len, int ignore) {
+    int direction;
+    int diff;
+
+    for (int i = 0; i < len - 1; i++) {
+        if (i == ignore) {
+            if (i == 0) {
+                direction = num[2] - num[1];
+                direction = abs(direction) / direction ;
+            }
+            continue;
+        }
+        else if (i == 0) {
+            if (ignore == 1) {
+                direction = num[i + 2] - num[i];
+            }
+            else {
+                direction = num[i + 1] - num[i];
+            }
+            direction = abs(direction) / direction ;
+        }
+        if (i + 1 == ignore) {
+            if (ignore == len - 1) {
+                return 1;
+            }
+            diff = num[i + 2] - num[i];
+        }
+        else {
+            diff = num[i + 1] - num[i];
+        }
+
+        if (direction != abs(diff) / diff) {
+            return 0;
+        }
+        else if (abs(diff) > 3 || diff == 0) {
+            return 0;
+        }
     }
 
-    return safe;
+    return 1;
 }
-*/
+
 
 int main(int argc, char *argv[]) {
     FILE *input = fopen(argv[1], "r");
@@ -37,97 +60,35 @@ int main(int argc, char *argv[]) {
     int its = 0;
     int safe = 0;
 
-    int prevprevnum, prevnum, num;
+    int islnsafe = 0;
     while (fgets(line, 256, input)) {
         printf("%s", line);
+        islnsafe = 0;
 
-        prevnum = strtol(strtok(line, " "), NULL, 10);
+        int nums[20];
+        int numcount = 1;
+        nums[0] = strtol(strtok(line, " "), NULL, 10);
         char *nexttok = strtok(NULL, " ");
-        int diff = 0;
-        int prevdiff = 0;
-        int issafe = 1;
-        int first = 1;
-        int removed = 0;
+        
 
         while (nexttok != NULL) {
-            num = strtol(nexttok, NULL, 10);
-
-            //islinesafe = issafe(num, prevnum, diff);
-
-            /*
-            if (!islinesafe && prevprevnum != 0x7fffffff) {
-                islinesafe = issafe(num, prevprevnum, prevdiff);
-            }
-            if (!islinesafe) {
-                printf("break\n");
-                break;
-            }
-            */
-
-            printf("n: %d, pn: %d, ppn: %d, safe: %d\n", num, prevnum, prevprevnum, issafe);
-            if (prevnum - num == 0) {
-                issafe = 0;
-                goto recheck;
-            }
-            else if (diff > 0 && prevnum - num < 0 ) {
-                issafe = 0;
-                goto recheck;
-            }
-            else if (diff < 0 && prevnum - num > 0 ) {
-                issafe = 0;
-                goto recheck;
-            }
-            else if (abs(prevnum - num) > 3) {
-                issafe = 0;
-                goto recheck;
-            }
-            else {
-                goto nocheck;
-            }
-
-            recheck:
-            if (removed) {
-                goto nocheck;
-            }
-            removed = 1; 
-            if (prevprevnum - num == 0) {
-                issafe = -1;
-            }
-            else if (prevdiff > 0 && prevprevnum - num < 0 ) {
-                issafe = -1;
-            }
-            else if (prevdiff < 0 && prevprevnum - num > 0 ) {
-                issafe = -1;
-            }
-            else if (abs(prevprevnum - num) > 3) {
-                issafe = -1;
-            }
-            issafe += 1;
-            printf("safe is now %d\n", issafe);
-            if (issafe == 1) {
-                diff = prevprevnum - num;
-                prevnum = num;
-                nexttok = strtok(NULL, " ");
-                continue;
-            }
-
-            nocheck:
-
-            prevdiff = diff;
-            diff = prevnum - num;
-
-            prevprevnum = prevnum;
-            prevnum = num;
-
+            nums[numcount] = strtol(nexttok, NULL, 10);
             nexttok = strtok(NULL, " ");
+            numcount++;
         }
+        islnsafe = issafe(nums, numcount, -1);
+        printf("safty: %d\n", islnsafe);
+        if (!islnsafe) {
+            for (int i = 0; i < numcount; i++) {
+                islnsafe = issafe(nums, numcount, i);
+                printf("removed element %d. safty: %d\n", i, islnsafe);
+                if (islnsafe) {
+                    break;
+                }
+            }
+        }
+        safe += islnsafe;
 
-        printf("%d\n", issafe);
-        safe += issafe;
-
-        prevprevnum = 0x7fffffff;
-
-        its++;
     }
 
     printf("safe: %d\n", safe);
