@@ -56,12 +56,6 @@ int orderline(char line[256], int pgrls[2][1200], int pgrls_size) {
         numsize++;
     }
 
-
-    printf("[");
-    for (int i = 0; i < numsize; i++) {
-        printf("%d,", nums[i]);
-    }
-    printf("]\n");
     int swaps = 1;
 
     while (swaps != 0) {
@@ -77,9 +71,6 @@ int orderline(char line[256], int pgrls[2][1200], int pgrls_size) {
 
                         int n2pos = in(nums, numsize, pgrls[0][j]) ;
                         if (n2pos > i) {
-                            printf("swapping %d and %d\n", nums[i], nums[n2pos]);
-
-
                             int tmp = nums[i];
                             nums[i] = nums[n2pos];
                             for (int k = i; k < n2pos; k++) {
@@ -87,12 +78,6 @@ int orderline(char line[256], int pgrls[2][1200], int pgrls_size) {
                                 nums[k + 1] = tmp;
                                 tmp = tmp2;
                             }
-
-                            printf("[");
-                            for (int i2 = 0; i2 < numsize; i2++) {
-                                printf("%d,", nums[i2]);
-                            }
-                            printf("]\n");
 
                             swaps++;
                         }
@@ -103,12 +88,7 @@ int orderline(char line[256], int pgrls[2][1200], int pgrls_size) {
     }
 
     int midn = nums[numsize / 2];
-    printf("[");
-    for (int i = 0; i < numsize; i++) {
-        printf("%d,", nums[i]);
-    }
-    printf("]\n");
-    printf("midn: %d\n\n", midn);
+
     free(nums);
     return midn;
 }
@@ -122,7 +102,6 @@ int main(int argc, char *argv[]) {
     }
 
     char line[256];
-
 
     int pgrls[2][1200];
     int pgrls_size = 0;
