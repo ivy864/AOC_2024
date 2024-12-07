@@ -121,6 +121,7 @@ int isloop(char map[140][140], uint32_t mapsize,char guy, int guyr, int guyc) {
         }
     }
 
+    free(vis);
     return 0;
 }
 
