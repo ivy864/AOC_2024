@@ -4,14 +4,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-// 40830
-// 40069t
-uint32_t mincost(int32_t ax, int32_t ay, int32_t bx, int32_t by, int32_t px,
-                 int32_t py) {
-    float b = ((px * ay) - (py * ax)) / (float)((bx * ay) - (by * ax));
-    float a = (px - (b * bx)) / (float) ax;
+// 245501973
+// 129952405336
+// 129952405336
+// 35400223840086
+// 35400223840089
+// 34566890506161
+// 71493195288102
+uint64_t mincost(int64_t ax, int64_t ay, int64_t bx, int64_t by, int64_t px,
+                 int64_t py) {
+    px += 10000000000000ULL;
+    py += 10000000000000ULL;
 
-    if ((px - (bx * (int32_t)b)) % ax == 0 && (py - (by * (int32_t)b)) % ay == 0) {
+    long double b = ((px * ay) - (py * ax)) / (long double)((bx * ay) - (by * ax));
+    long double a = (px - (b * bx)) / (long double) ax;
+
+    if ((px - (bx * (uint64_t)b)) % ax == 0 && (py - (by * (uint64_t)b)) % ay == 0) {
         return a * 3 + b;
     }
 
@@ -48,8 +56,8 @@ int main(int argc, char* argv[]) {
         printf("ax: %d, ay: %d, bx: %d, by: %d, px: %d, py: %d\n", ax, ay, bx,
                by, px, py);
 
-        uint32_t cost = mincost(ax, ay, bx, by, px, py);
-        printf("cost: %d\n\n", cost);
+        uint64_t cost = mincost(ax, ay, bx, by, px, py);
+        printf("cost: %lu\n\n", cost);
         total += cost;
 
         // consume blank line
